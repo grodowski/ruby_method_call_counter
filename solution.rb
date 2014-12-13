@@ -1,16 +1,6 @@
 # NewRelic Metaprogramming Challange 2014
 # Author: Jan Grodowski, jgrodowski@gmail.com, http://github.com/grodowski
 
-# Usage:
-# COUNT_CALLS_TO="String#size" ruby -r ./solution.rb -e '3.times { "Abc".size }'
-# COUNT_CALLS_TO='String#size' ruby -r ./solution.rb -e '(1..100).each{|i| i.to_s.size if i.odd? }'
-# COUNT_CALLS_TO='B#foo' ruby -r ./solution.rb -e 'module A; def foo; end; end; class B; include A; end; 10.times{B.new.foo}'
-
-# Valid COUNT_CALLS_TO values:
-# 'String.count'
-# 'ActiveRecord::Base.connection'
-# 'String#count'
-
 argument_str = ENV['COUNT_CALLS_TO']
 
 arr_hash = argument_str.split('#')
