@@ -11,10 +11,7 @@ module MethodCallCounter
     Object.class_eval do
       def self.inherited(subclass)
         super(subclass)
-        if subclass.to_s == @@watch_class
-          MethodCallCounter.hook_into! subclass
-          # puts "Hooking into #{subclass}..."
-        end
+        MethodCallCounter.hook_into! subclass if subclass.to_s == @@watch_class
       end
     end
   end
@@ -24,16 +21,13 @@ module MethodCallCounter
   end
   
   def self.init_variables(method_sig)
-    arr_hash = method_sig.split('#')
-    arr_dot = method_sig.split('.')
     @@call_count = 0
-    @@watch_class, @@watch_name, @@watch_type = if arr_hash.size == 2
-      arr_hash << :instance
-    elsif arr_dot.size == 2
-      arr_dot << :class_method
-    else
-      raise ArgumentError.new('COUNT_CALLS_TO has invalid format or is missing')
-    end
+    @@watch_type, sep = if method_sig =~ /#/ 
+                          [:instance, '#']
+                        else
+                          [:class_method, '.']
+                        end
+    @@watch_class, @@watch_name = method_sig.split sep
   end
   
   def self.define_count_wrapper(klass)  
@@ -45,19 +39,19 @@ module MethodCallCounter
       args_list = args.map { |arg| arg[1] }
       wrapper_method = Proc.new { |*args_list| @@call_count += 1; watched_method *args_list }
       define_method @@watch_name, wrapper_method 
-      # puts 'Ready!'
+      MethodCallCounter.debug 'Ready!'
     end
   end
     
   def self.hook_into!(klass)
     klass = klass.singleton_class if @@watch_type == :class_method
-    # puts "Initializing hooks: [class: #{klass}, watch_name: #{@@watch_name}, watch_type: #{@@watch_type}]"
+    debug "Initializing hooks: [class: #{klass}, watch_name: #{@@watch_name}, watch_type: #{@@watch_type}]"
     klass.class_eval do
       # setup the watch method - either directly or by waiting for the method
       # to be added using the method_added hook
     
       if method_defined?(@@watch_name)
-        # puts "Adding count wrapper to #{@@watch_name}..."
+        MethodCallCounter.debug "Adding count wrapper to #{@@watch_name}..."
         MethodCallCounter.define_count_wrapper klass
       else
         # need to add callback to method_added and define wrapper
@@ -72,7 +66,7 @@ module MethodCallCounter
           receiver.send :define_method, "#{singleton}method_added" do |method_name|
             if method_name.to_s == @@watch_name && !@@_has_watch_method
               @@_has_watch_method = true
-              # puts 'Adding watch method...'
+              MethodCallCounter.debug 'Adding watch method...'
               class_eval do 
                 MethodCallCounter.define_count_wrapper klass
               end
@@ -109,6 +103,11 @@ module MethodCallCounter
       end
   
     end
+    
+  end
+  
+  def self.debug(output)
+    puts output if ENV['DEBUG']
   end
   
 end
