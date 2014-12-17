@@ -1,7 +1,7 @@
 NewRelic Metaprogramming Challenge
 ===
 
-*A Ruby script to count method invocations*
+**A Ruby script to count method invocations**
 
 Sample usage:
 ---
@@ -51,4 +51,5 @@ String#count
 To Do:
 ---
 * Accept methods with parameters
+* Add tests
 
