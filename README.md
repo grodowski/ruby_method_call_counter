@@ -3,7 +3,7 @@ NewRelic Metaprogramming Challenge
 
 **A Ruby script to count method invocations**
 
-Sample usage:
+Sample uses:
 ---
 
 ```
@@ -14,7 +14,7 @@ prints 'String#size was called 3 times'
 
 ```
 # already defined class method
-
+COUNT_CALLS_TO="Math.sin" ruby -r ./solution.rb -e '4.times { |n| puts Math.sin(n + 0.33) }'
 ```
 
 ```
@@ -38,6 +38,16 @@ COUNT_CALLS_TO='Foo.bar' ruby -r ./solution.rb -e 'class Foo; def self.bar(str);
 ```
 # instance method define in the host script
 COUNT_CALLS_TO='Foo#bar' ruby -r ./solution.rb -e 'class Foo; def bar(str); puts str; end; end; 5.times { Foo.new.bar("Placki") }'
+```
+
+```
+# instance method defined dynamically
+COUNT_CALLS_TO="Foo#bar" ruby -r ./solution.rb -e 'class Foo; end; a = Foo.new; Foo.class_eval do; define_method :bar do; puts "a"; end; end; 2.times { a.bar }'
+```
+
+```
+# class method defined dynamically
+COUNT_CALLS_TO="Foo.bar" ruby -r ./solution.rb -e 'class Foo; end; a = Foo.new; Foo.class_eval do; define_singleton_method :bar do; puts "a"; end; end; 2.times { Foo.bar }'
 ```
 
 Valid `COUNT_CALLS_TO` values:
