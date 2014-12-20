@@ -25,7 +25,6 @@ Execute a Ruby script with `COUNT_CALLS_TO` set to count invocations of `Hash#du
 $ COUNT_CALLS_TO='Hash#dup' rspec spec/controllers
 # some output
 Hash#dup has been invoked 2768 times
-
 ```
 
 To Do
@@ -34,5 +33,5 @@ To Do
 * Handle optional parameters more gracefully
 * Add more tests
 
-Feel free to **contribute** to this project by submitting pull requests! We can create something useful together, maybe :)
+Feel free to **contribute** to this project by submitting pull requests! We can create something useful together, maybe :) 
 
