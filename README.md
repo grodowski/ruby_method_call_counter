@@ -8,6 +8,9 @@ Valid method signatures:
 Math.sin
 ActiveRecord::Base.connection
 String#size
+Foo.bar
+Post#status
+etc...
 ```
 
 Example
