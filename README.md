@@ -1,4 +1,4 @@
-[![codebeat badge](https://codebeat.co/badges/47cc614e-abd2-48a1-b077-e913db33ca59)](https://codebeat.co/a/jan-grodowski/projects/ruby_method_call_counter-master)
+[![codebeat badge](https://codebeat.co/badges/794bb9da-167d-4a39-a505-b96754b20088)](https://codebeat.co/projects/ruby_method_call_counter-master)
 
 MethodCallCounter
 ===
